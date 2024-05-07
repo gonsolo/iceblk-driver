@@ -22,6 +22,8 @@
 #include <linux/of_platform.h>
 #include <linux/of_irq.h>
 
+#include <linux/platform_device.h>
+
 #include <asm/io.h>
 #include <asm/page.h>
 
