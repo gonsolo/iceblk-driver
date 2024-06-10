@@ -246,7 +246,7 @@ static int iceblk_setup(struct iceblk_port *port)
 		goto exit_queue;
 	}
 
-	port->gd = blk_mq_alloc_disk(&port->tag_set, NULL);
+	port->gd = blk_mq_alloc_disk(&port->tag_set, NULL, NULL);
 	if(IS_ERR(port->gd)) {
 		dev_err(dev, "Could not allocate disk\n");
 		goto exit_gendisk;
