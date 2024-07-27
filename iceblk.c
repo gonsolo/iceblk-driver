@@ -246,7 +246,12 @@ static int iceblk_setup(struct iceblk_port *port)
 		goto exit_queue;
 	}
 
-	port->gd = blk_mq_alloc_disk(&port->tag_set, NULL, NULL);
+        struct queue_limits lim = {
+               .max_hw_sectors         = max_req_len,
+               .max_segments           = 1,
+        };
+
+	port->gd = blk_mq_alloc_disk(&port->tag_set, &lim, NULL);
 	if(IS_ERR(port->gd)) {
 		dev_err(dev, "Could not allocate disk\n");
 		goto exit_gendisk;
@@ -254,8 +259,6 @@ static int iceblk_setup(struct iceblk_port *port)
 	port->queue = port->gd->queue;
 
 	blk_queue_logical_block_size(port->queue, ICEBLK_SECTOR_SIZE);
-	blk_queue_max_segments(port->queue, 1);
-	blk_queue_max_hw_sectors(port->queue, max_req_len);
 
 	port->gd->major = port->major;
 	port->gd->first_minor = 0;
